@@ -1,4 +1,4 @@
-export default function userRepository(repository) {
+export default function memberRepository(repository) {
   const findByProperty = (params) => repository.findByProperty(params);
   const findByEmail = (email) => repository.findByEmail(email);
   const countAll = (params) => repository.countAll(params);
