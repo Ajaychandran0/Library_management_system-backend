@@ -23,15 +23,15 @@ export default function memberRepositoryMongoDB() {
       collegeId: member.getCollegeId(),
       email: member.getEmail(),
       password: member.getPassword(),
-      phone:member.getPhone(),
+      phone: member.getPhone(),
       department: member.getDepartment(),
       address: member.getAddress(),
-      profilePic:member.getProfilePic(),
+      profilePic: member.getProfilePic(),
       collegeIdCard: member.getCollegeIdCard(),
-      createdAt: member.getCreatedAt(),
+      createdAt: member.getCreatedAt()
     });
 
-    return newMember.save()
+    return newMember.save();
   };
 
   return {

@@ -10,11 +10,15 @@ export default function authService() {
 
   const compare = (password, hashedPassword) => bcrypt.compareSync(password, hashedPassword);
 
-  const verify = (token) => jwt.verify(token, config.jwtSecret);
+  const verify = (token, role) => {
+    const jwtSecret = role === "admin" ? config.jwtAdminSecret : config.jwtUserSecret;
+    return jwt.verify(token, jwtSecret);
+  };
 
-  const generateToken = (payload) => jwt.sign(payload, config.jwtSecret, {
-    expiresIn: 360000
-  });
+  const generateToken = (payload) => {
+    const jwtSecret = payload.role === "admin" ? config.jwtAdminSecret : config.jwtUserSecret;
+    return jwt.sign(payload, jwtSecret, { expiresIn: 360000 });
+  };
 
   return {
     encryptPassword,

@@ -6,16 +6,18 @@ export default function authMiddleware(req, res, next) {
   const token = req.header("Authorization");
   const authService = authServiceInterface(authServiceImpl());
   if (!token) {
-    res.status(401).json({message:"No access token found"});
+    res.status(401).json({ message: "No access token found" });
   }
   if (token.split(" ")[0] !== "Bearer") {
-    res.status(401).json({message:"Invalid access token format"});
+    res.status(401).json({ message: "Invalid access token format" });
   }
   try {
-    const decoded = authService.verify(token.split(" ")[1]);
+    const role = token.split(" ")[2] ? token.split(" ")[2] : "member";
+
+    const decoded = authService.verify(token.split(" ")[1], role);
     req.user = decoded.user;
     next();
   } catch (err) {
-    res.status(401).json({message:"Token is not valid"});
+    res.status(401).json({ message: "Token is not valid" });
   }
 }

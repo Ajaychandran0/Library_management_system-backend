@@ -13,7 +13,7 @@ export default function addMember(
     department,
     address,
     profilePic,
-    collegeIdCard,
+    collegeIdCard
   } = memberDetails;
 
   const password = collegeId;
@@ -34,26 +34,24 @@ export default function addMember(
     address,
     profilePic,
     collegeIdCard,
-    createdAt,
+    createdAt
   });
 
-  return memberRepository
-    .findByProperty({ collegeId })
-    .then((member) => {
-      if (member.length) {
-        const error = {
-          message: `User with college id: ${collegeId} already exists`,
-          statusCode: 500,
-        };
-        throw error;
-      }
-      return memberRepository.findByProperty({ email });
-    })
+  return memberRepository.findByProperty({ collegeId }).then((memberExist) => {
+    if (memberExist.length) {
+      const error = {
+        message: `User with college id: ${collegeId} already exists`,
+        statusCode: 500
+      };
+      throw error;
+    }
+    return memberRepository.findByProperty({ email });
+  })
     .then((memberWithEmail) => {
       if (memberWithEmail.length) {
         const error = {
           message: `User with email: ${email} already exists`,
-          statusCode: 500,
+          statusCode: 500
         };
         throw error;
       }

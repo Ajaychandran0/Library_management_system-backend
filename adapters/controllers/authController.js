@@ -11,8 +11,9 @@ export default function authController(
 
   const doLogin = (req, res) => {
     const { email, password } = req.body;
+    const role = req?.role;
 
-    login(email, password, dbRepository, authService)
+    login(email, password, dbRepository, authService, role)
       .then((token) => {
         res.status(200).json({ token });
       })
@@ -22,6 +23,6 @@ export default function authController(
   };
 
   return {
-    doLogin,
+    doLogin
   };
 }

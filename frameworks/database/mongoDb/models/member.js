@@ -4,44 +4,44 @@ const { Schema } = mongoose;
 const MemberSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   collegeId: {
     type: String,
     required: true,
-    unique:true
+    unique: true
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true,
+    lowercase: true
   },
   password: {
-    type: String,
+    type: String
   },
   phone: {
     type: String,
-    required: true,
+    required: true
   },
   department: {
     type: String,
-    required: true,
+    required: true
   },
   profilePic: {
-    type: String,
+    type: String
   },
   collegeIdCard: {
-    type: String,
+    type: String
     // required: true,
   },
   createdAt: {
     type: Date,
-    required: true,
+    required: true
   },
   address: {
-    type: String,
-  },
+    type: String
+  }
 });
 
 const Member = mongoose.model("members", MemberSchema);

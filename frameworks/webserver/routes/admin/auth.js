@@ -3,6 +3,7 @@ import adminDbRepository from "../../../../application/repositories/adminDbRepos
 import adminDbRepositoryMongoDB from "../../../database/mongoDb/repositories/adminRepositoryMongoDb.js";
 import authServiceInterface from "../../../../application/services/authService.js";
 import authServiceImpl from "../../../services/authService.js";
+import addRole from "../../middlewares/addRole.js";
 
 export default function authRouter(express) {
   const router = express.Router();
@@ -14,7 +15,7 @@ export default function authRouter(express) {
     authServiceImpl
   );
 
-  router.route("/").post(controller.doLogin);
+  router.route("/").post(addRole, controller.doLogin);
 
   return router;
 }

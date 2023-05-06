@@ -6,6 +6,7 @@ import expressConfig from "./frameworks/webserver/express.js";
 import mongoDbConnection from "./frameworks/database/mongoDb/connection.js";
 import serverConfig from "./frameworks/webserver/server.js";
 import routes from "./frameworks/webserver/routes/index.js";
+// import errorHandler from "./frameworks/webserver/middlewares/errorMiddleware.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -21,5 +22,7 @@ mongoDbConnection(mongoose, config).connectToMongo();
 
 // routes for each endpoint
 routes(app, express);
+
+// app.use(errorHandler);
 
 export default app;

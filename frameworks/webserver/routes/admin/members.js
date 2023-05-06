@@ -16,7 +16,7 @@ export default function memberRouter(express) {
     authServiceImpl
   );
 
-  router.route("/")
+  router.route("/", authMiddleware)
     .get(controller.fetchMembersByProperty)
     .post(controller.addNewMember);
 

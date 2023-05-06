@@ -1,4 +1,4 @@
-export default function login(email, password, userRepository, authService) {
+export default function login(email, password, userRepository, authService, role = "member") {
   if (!email || !password) {
     const error = "email and password must be provided";
     throw error;
@@ -20,7 +20,8 @@ export default function login(email, password, userRepository, authService) {
       user: {
         id: user._id,
         email: user.email,
-      },
+        role
+      }
     };
 
     return authService.generateToken(payloads);

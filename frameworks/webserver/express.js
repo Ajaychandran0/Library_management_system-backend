@@ -13,20 +13,20 @@ export default function expressConfig(app) {
     bodyParser.urlencoded({
       limit: "50mb",
       extended: true,
-      parameterLimit: 50000,
-    }),
+      parameterLimit: 50000
+    })
   );
   app.use(cors());
 
   app.use((req, res, next) => {
     res.setHeader(
       "Access-Control-Allow-Methods",
-      "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+      "GET, POST, OPTIONS, PUT, PATCH, DELETE"
     );
 
     res.setHeader(
       "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-type, Authorization, Cache-control, Pragma",
+      "X-Requested-With, Content-type, Authorization, Cache-control, Pragma"
     );
     next();
   });

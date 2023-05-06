@@ -1,4 +1,4 @@
-export default function user(member) {
+export default function member(member) {
   return {
     getName: () => member.name,
     getCollegeId: () => member.collegeId,

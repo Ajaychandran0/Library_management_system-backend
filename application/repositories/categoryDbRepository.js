@@ -1,15 +1,13 @@
-export default function memberRepository(repository) {
+export default function categoryRepository(repository) {
   const findByProperty = (params) => repository.findByProperty(params);
-  const findByEmail = (email) => repository.findByEmail(email);
   const countAll = (params) => repository.countAll(params);
   const findById = (id) => repository.findById(id);
-  const add = (member) => repository.add(member);
+  const add = (category) => repository.add(category);
   const block = (id) => repository.block(id);
-  const deleteById = (id) => repository.deleteById(id);
+  const deleteById = (id) => repository.delete(id);
 
   return {
     findByProperty,
-    findByEmail,
     countAll,
     findById,
     add,
