@@ -1,4 +1,4 @@
-export default function member(member) {
+export default function Member(member) {
   return {
     getName: () => member.name,
     getCollegeId: () => member.collegeId,
@@ -9,6 +9,6 @@ export default function member(member) {
     getAddress: () => member.address,
     getProfilePic: () => member.profilePic,
     getCollegeIdCard: () => member.collegeIdCard,
-    getCreatedAt: () => member.createdAt,
+    getCreatedAt: () => member.createdAt
   };
 }

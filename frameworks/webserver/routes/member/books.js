@@ -1,7 +1,6 @@
 import bookController from "../../../../adapters/controllers/bookController.js";
 import bookDbRepository from "../../../../application/repositories/bookDbRepository.js";
 import bookDbRepositoryMongoDB from "../../../database/mongoDb/repositories/bookRepositoryMongoDb.js";
-import authMiddleware from "../../middlewares/authMiddleware.js";
 
 export default function bookRouter(express) {
   const router = express.Router();
@@ -11,9 +10,8 @@ export default function bookRouter(express) {
   const controller = bookController(dbRepository);
 
   router
-    .route("/", authMiddleware)
-    .get(controller.fetchBooksByProperty)
-    .post(controller.addNewbook);
+    .route("/")
+    .get(controller.fetchBooksByProperty);
 
   return router;
 }

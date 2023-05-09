@@ -7,7 +7,7 @@ export default function adminRepositoryMongoDB() {
     const newUser = new AdminModel({
       email: user.getEmail(),
       password: user.getPassword(),
-      date: user.getDate(),
+      date: user.getDate()
     });
 
     return newUser.save();
@@ -15,6 +15,6 @@ export default function adminRepositoryMongoDB() {
 
   return {
     findByEmail,
-    add,
+    add
   };
 }

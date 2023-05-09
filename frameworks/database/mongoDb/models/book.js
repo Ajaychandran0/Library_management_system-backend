@@ -41,7 +41,7 @@ const BookSchema = new Schema({
     type: String
   },
   shelfNo: {
-    type: String
+    type: Number
   },
   comments: {
     type: String

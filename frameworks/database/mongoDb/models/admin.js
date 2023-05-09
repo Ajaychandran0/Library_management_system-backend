@@ -6,13 +6,13 @@ const AdminSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    lowercase: true,
+    lowercase: true
   },
 
   password: {
     type: String,
-    required: true,
-  },
+    required: true
+  }
 });
 
 const Admin = mongoose.model("admin", AdminSchema);
