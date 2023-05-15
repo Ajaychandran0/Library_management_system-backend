@@ -7,13 +7,13 @@ function omit(obj, ...props) {
 }
 
 export default function bookRepositoryMongoDB() {
-  const findByProperty = (params) => BookModel.find(omit(params, "page", "perPage"))
-    .skip(params.perPage * (params.page - 1))
-    .limit(params.perPage);
+  const findByProperty = (params) => BookModel.find(omit(params, "page", "pageSize"))
+    .skip(params.pageSize * params.page)
+    .limit(params.pageSize);
 
   const findByEmail = (email) => BookModel.findOne({ email }).select("password email");
 
-  const countAll = (params) => BookModel.countDocuments(omit(params, "page", "perPage"));
+  const countAll = (params) => BookModel.countDocuments(omit(params, "page", "pageSize"));
 
   const findById = (id) => BookModel.findById(id);
 

@@ -29,7 +29,7 @@ export default function bookController(dbRepository) {
 
     // predefined query params (apart from dynamically) for pagination
     params.page = params.page ? parseInt(params.page, 10) : 1;
-    params.perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
+    params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
 
     findByProperty(params, dbRepository)
       .then((books) => {
@@ -38,8 +38,8 @@ export default function bookController(dbRepository) {
       })
       .then((totalItems) => {
         response.totalItems = totalItems;
-        response.totalPages = Math.ceil(totalItems / params.perPage);
-        response.itemsPerPage = params.perPage;
+        response.totalPages = Math.ceil(totalItems / params.pageSize);
+        response.itemsPerPage = params.pageSize;
         return res.json(response);
       })
       .catch((error) => res.status(500).json({ message: error }));

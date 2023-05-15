@@ -4,6 +4,6 @@ export default function adminRepositry(repository) {
 
   return {
     findByEmail,
-    add,
+    add
   };
 }

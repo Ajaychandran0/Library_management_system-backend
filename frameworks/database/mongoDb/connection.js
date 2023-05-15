@@ -6,7 +6,7 @@ export default function connection(mongoose, config) {
         () => {},
         (err) => {
           console.info("Mongodb error", err);
-        },
+        }
       )
       .catch((err) => {
         console.log("ERROR:", err);
@@ -23,6 +23,6 @@ export default function connection(mongoose, config) {
   });
 
   return {
-    connectToMongo,
+    connectToMongo
   };
 }

@@ -1,14 +1,6 @@
 import login from "../../application/use_cases/auth/login.js";
 
-export default function authController(
-  userDbRepository,
-  userDbRepositoryImpl,
-  authServiceInterface,
-  authServiceImpl
-) {
-  const dbRepository = userDbRepository(userDbRepositoryImpl());
-  const authService = authServiceInterface(authServiceImpl());
-
+export default function authController(dbRepository, authService) {
   const doLogin = (req, res) => {
     const { email, password } = req.body;
     const role = req?.role;

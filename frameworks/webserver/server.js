@@ -6,6 +6,6 @@ export default function serverConfig(server, config) {
   }
 
   return {
-    startServer,
+    startServer
   };
 }

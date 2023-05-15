@@ -9,9 +9,7 @@ export default function categoryRouter(express) {
   const dbRepository = categoryDbRepository(categoryDbRepositoryMongoDB());
   const controller = categoryController(dbRepository);
 
-  router
-    .route("/")
-    .get(controller.fetchAllCategories);
+  router.route("/").get(controller.fetchAllCategories);
 
   return router;
 }

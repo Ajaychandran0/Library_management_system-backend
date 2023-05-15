@@ -9,16 +9,15 @@ export default function memberRouter(express) {
   const router = express.Router();
 
   // load controller with dependencies
-  const controller = memberController(
-    memberDbRepository,
-    memberDbRepositoryMongoDB,
-    authServiceInterface,
-    authServiceImpl
-  );
+  const dbRepository = memberDbRepository(memberDbRepositoryMongoDB());
+  const authService = authServiceInterface(authServiceImpl());
 
-  router.route("/", authMiddleware)
-    .get(controller.fetchMembersByProperty)
-    .post(controller.addNewMember);
+  const controller = memberController(dbRepository, authService);
+
+  router
+    .route("/")
+    .get(authMiddleware, controller.fetchMembersByProperty)
+    .post(authMiddleware, controller.addNewMember);
 
   return router;
 }

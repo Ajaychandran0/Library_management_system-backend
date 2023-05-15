@@ -1,6 +1,7 @@
 import addCategory from "../../application/use_cases/category/add.js";
 import findAllCategories from "../../application/use_cases/category/fetchAll.js";
 import countAll from "../../application/use_cases/category/countAll.js";
+import deleteCategory from "../../application/use_cases/category/delete.js";
 
 export default function categoryController(dbRepository) {
   const addNewCategory = (req, res) => {
@@ -24,7 +25,7 @@ export default function categoryController(dbRepository) {
 
     // predefined query params (apart from dynamically) for pagination
     params.page = params.page ? parseInt(params.page, 10) : 1;
-    params.perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
+    params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 10;
 
     findAllCategories(params, dbRepository)
       .then((categories) => {
@@ -33,15 +34,25 @@ export default function categoryController(dbRepository) {
       })
       .then((totalItems) => {
         response.totalItems = totalItems;
-        response.totalPages = Math.ceil(totalItems / params.perPage);
-        response.itemsPerPage = params.perPage;
+        response.totalPages = Math.ceil(totalItems / params.pageSize);
+        response.itemsPerPage = params.pageSize;
         return res.json(response);
       })
       .catch((error) => res.status(500).json({ message: error }));
   };
 
+  const deleteCategoryById = (req, res) => {
+    const { id } = req.body;
+    deleteCategory(id)
+      .then(() => res.status(200))
+      .catch((err) => {
+        res.status(err.statusCode || 500).json({ message: err.message || err });
+      });
+  };
+
   return {
     addNewCategory,
-    fetchAllCategories
+    fetchAllCategories,
+    deleteCategoryById
   };
 }

@@ -2,15 +2,7 @@ import addMember from "../../application/use_cases/member/add.js";
 import findByProperty from "../../application/use_cases/member/findByProperty.js";
 import countAll from "../../application/use_cases/member/countAll.js";
 
-export default function memberController(
-  memberDbRepository,
-  memberDbRepositoryImpl,
-  authServiceInterface,
-  authServiceImpl
-) {
-  const dbRepository = memberDbRepository(memberDbRepositoryImpl());
-  const authService = authServiceInterface(authServiceImpl());
-
+export default function memberController(dbRepository, authService) {
   const addNewMember = (req, res) => {
     const memberDetails = req.body;
 
@@ -32,7 +24,7 @@ export default function memberController(
 
     // predefined query params (apart from dynamically) for pagination
     params.page = params.page ? parseInt(params.page, 10) : 1;
-    params.perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
+    params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 10;
 
     findByProperty(params, dbRepository)
       .then((members) => {
@@ -41,8 +33,8 @@ export default function memberController(
       })
       .then((totalItems) => {
         response.totalItems = totalItems;
-        response.totalPages = Math.ceil(totalItems / params.perPage);
-        response.itemsPerPage = params.perPage;
+        response.totalPages = Math.ceil(totalItems / params.pageSize);
+        response.itemsPerPage = params.pageSize;
         return res.json(response);
       })
       .catch((error) => res.status(500).json({ message: error }));

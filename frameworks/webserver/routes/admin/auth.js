@@ -8,12 +8,9 @@ import addRole from "../../middlewares/addRole.js";
 export default function authRouter(express) {
   const router = express.Router();
 
-  const controller = authController(
-    adminDbRepository,
-    adminDbRepositoryMongoDB,
-    authServiceInterface,
-    authServiceImpl
-  );
+  const dbRepository = adminDbRepository(adminDbRepositoryMongoDB());
+  const authService = authServiceInterface(authServiceImpl());
+  const controller = authController(dbRepository, authService);
 
   router.route("/").post(addRole, controller.doLogin);
 

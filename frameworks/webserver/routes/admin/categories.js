@@ -13,7 +13,8 @@ export default function categoryRouter(express) {
   router
     .route("/", authMiddleware)
     .get(controller.fetchAllCategories)
-    .post(controller.addNewCategory);
+    .post(controller.addNewCategory)
+    .delete(controller.deleteCategoryById);
 
   return router;
 }

@@ -11,9 +11,9 @@ export default function bookRouter(express) {
   const controller = bookController(dbRepository);
 
   router
-    .route("/", authMiddleware)
-    .get(controller.fetchBooksByProperty)
-    .post(controller.addNewbook);
+    .route("/")
+    .get(authMiddleware, controller.fetchBooksByProperty)
+    .post(authMiddleware, controller.addNewbook);
 
   return router;
 }

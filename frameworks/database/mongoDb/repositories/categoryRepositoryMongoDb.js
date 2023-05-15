@@ -7,11 +7,11 @@ function omit(obj, ...props) {
 }
 
 export default function categoryRepositoryMongoDB() {
-  const findByProperty = (params) => CategoryModel.find(omit(params, "page", "perPage"))
-    .skip(params.perPage * (params.page - 1))
-    .limit(params.perPage);
+  const findByProperty = (params) => CategoryModel.find(omit(params, "page", "pageSize"))
+    .skip(params.pageSize * (params.page))
+    .limit(params.pageSize);
 
-  const countAll = (params) => CategoryModel.countDocuments(omit(params, "page", "perPage"));
+  const countAll = (params) => CategoryModel.countDocuments(omit(params, "page", "pageSize"));
 
   const findById = (id) => CategoryModel.findById(id);
 
