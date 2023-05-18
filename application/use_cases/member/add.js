@@ -19,7 +19,7 @@ export default function addMember(
   const password = collegeId;
   const createdAt = new Date();
 
-  if (!name || !email || !phone || !department || !collegeId) {
+  if (!name || !email || !phone || !collegeId) {
     const error = { message: "Input fields cannot be empty", statusCode: 400 };
     throw error;
   }
@@ -37,16 +37,18 @@ export default function addMember(
     createdAt
   });
 
-  return memberRepository.findByProperty({ collegeId }).then((memberExist) => {
-    if (memberExist.length) {
-      const error = {
-        message: `User with college id: ${collegeId} already exists`,
-        statusCode: 500
-      };
-      throw error;
-    }
-    return memberRepository.findByProperty({ email });
-  })
+  return memberRepository
+    .findByProperty({ collegeId })
+    .then((memberExist) => {
+      if (memberExist.length) {
+        const error = {
+          message: `User with college id: ${collegeId} already exists`,
+          statusCode: 500
+        };
+        throw error;
+      }
+      return memberRepository.findByProperty({ email });
+    })
     .then((memberWithEmail) => {
       if (memberWithEmail.length) {
         const error = {

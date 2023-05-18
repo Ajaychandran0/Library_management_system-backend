@@ -3,7 +3,6 @@ export default function login(email, password, userRepository, authService, role
     const error = "email and password must be provided";
     throw error;
   }
-
   return userRepository.findByEmail(email).then((user) => {
     if (!user) {
       const error = "Invalid email or password";

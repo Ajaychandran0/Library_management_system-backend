@@ -1,4 +1,2 @@
-const deleteCategory = (id) => {
-  console.log(id, "hi");
-};
+const deleteCategory = (id, categoryRepository) => categoryRepository.deleteById(id);
 export default deleteCategory;

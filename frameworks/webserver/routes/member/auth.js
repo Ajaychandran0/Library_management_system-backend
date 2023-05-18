@@ -7,12 +7,9 @@ import authServiceImpl from "../../../services/authService.js";
 export default function authRouter(express) {
   const router = express.Router();
 
-  const controller = authController(
-    memberDbRepository,
-    memberDbRepositoryMongoDB,
-    authServiceInterface,
-    authServiceImpl
-  );
+  const dbRepository = memberDbRepository(memberDbRepositoryMongoDB());
+  const authService = authServiceInterface(authServiceImpl());
+  const controller = authController(dbRepository, authService);
 
   router.route("/").post(controller.doLogin);
 

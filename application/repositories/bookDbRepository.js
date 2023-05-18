@@ -6,6 +6,7 @@ export default function bookRepository(repository) {
   const add = (book) => repository.add(book);
   const block = (id) => repository.block(id);
   const deleteById = (id) => repository.deleteById(id);
+  const updateById = (id, updatedBook) => repository.updateById(id, updatedBook);
 
   return {
     findByProperty,
@@ -14,6 +15,7 @@ export default function bookRepository(repository) {
     findById,
     add,
     block,
-    deleteById
+    deleteById,
+    updateById
   };
 }

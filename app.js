@@ -1,13 +1,14 @@
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import http from "http";
-import config from "./config/config.js";
 import expressConfig from "./frameworks/webserver/express.js";
 import mongoDbConnection from "./frameworks/database/mongoDb/connection.js";
 import serverConfig from "./frameworks/webserver/server.js";
 import routes from "./frameworks/webserver/routes/index.js";
 // import errorHandler from "./frameworks/webserver/middlewares/errorMiddleware.js";
 
+dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
@@ -15,10 +16,10 @@ const server = http.createServer(app);
 expressConfig(app);
 
 // server configuration and start
-serverConfig(server, config).startServer();
+serverConfig(server).startServer();
 
 // DB configuration and connection create
-mongoDbConnection(mongoose, config).connectToMongo();
+mongoDbConnection(mongoose).connectToMongo();
 
 // routes for each endpoint
 routes(app, express);

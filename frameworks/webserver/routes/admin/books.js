@@ -15,5 +15,10 @@ export default function bookRouter(express) {
     .get(authMiddleware, controller.fetchBooksByProperty)
     .post(authMiddleware, controller.addNewbook);
 
+  router
+    .route("/:id")
+    .put(authMiddleware, controller.updateBookById)
+    .delete(authMiddleware, controller.deleteBookById);
+
   return router;
 }

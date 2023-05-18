@@ -19,5 +19,10 @@ export default function memberRouter(express) {
     .get(authMiddleware, controller.fetchMembersByProperty)
     .post(authMiddleware, controller.addNewMember);
 
+  router
+    .route("/:id")
+    .put(authMiddleware, controller.updateMemberById)
+    .delete(authMiddleware, controller.deleteMemberById);
+
   return router;
 }

@@ -1,11 +1,12 @@
 import addBook from "../../application/use_cases/book/add.js";
 import findByProperty from "../../application/use_cases/book/findByProperty.js";
 import countAll from "../../application/use_cases/book/countAll.js";
+import deleteBook from "../../application/use_cases/book/delete.js";
+import updateBook from "../../application/use_cases/book/update.js";
 
 export default function bookController(dbRepository) {
   const addNewbook = (req, res) => {
     const bookDetails = req.body;
-
     addBook(bookDetails, dbRepository)
       .then((book) => {
         res.status(200).json({ book });
@@ -28,9 +29,8 @@ export default function bookController(dbRepository) {
     });
 
     // predefined query params (apart from dynamically) for pagination
-    params.page = params.page ? parseInt(params.page, 10) : 1;
+    params.page = params.page ? parseInt(params.page, 10) : 0;
     params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
-
     findByProperty(params, dbRepository)
       .then((books) => {
         response.books = books;
@@ -45,8 +45,31 @@ export default function bookController(dbRepository) {
       .catch((error) => res.status(500).json({ message: error }));
   };
 
+  const deleteBookById = (req, res) => {
+    const { id } = req.params;
+    deleteBook(id, dbRepository)
+      .then(() => res.status(200).json({ id }))
+      .catch((err) => {
+        res.status(err.statusCode || 500).json({ message: err.message || err });
+      });
+  };
+
+  const updateBookById = (req, res) => {
+    const { id } = req.params;
+    const updatedBook = req.body;
+    updateBook(id, updatedBook, dbRepository)
+      .then(() => {
+        res.status(200).json({ success: true });
+      })
+      .catch((err) => {
+        res.status(err.statusCode || 500).json({ message: err.message || err });
+      });
+  };
+
   return {
     addNewbook,
-    fetchBooksByProperty
+    fetchBooksByProperty,
+    deleteBookById,
+    updateBookById
   };
 }

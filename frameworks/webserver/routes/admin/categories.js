@@ -11,10 +11,13 @@ export default function categoryRouter(express) {
   const controller = categoryController(dbRepository);
 
   router
-    .route("/", authMiddleware)
-    .get(controller.fetchAllCategories)
-    .post(controller.addNewCategory)
-    .delete(controller.deleteCategoryById);
+    .route("/")
+    .get(authMiddleware, controller.fetchAllCategories)
+    .post(authMiddleware, controller.addNewCategory);
+  router
+    .route("/:id")
+    .put(authMiddleware, controller.updateCategoryById)
+    .delete(authMiddleware, controller.deleteCategoryById);
 
   return router;
 }

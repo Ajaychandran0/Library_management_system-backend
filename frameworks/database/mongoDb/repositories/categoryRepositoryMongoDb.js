@@ -8,7 +8,7 @@ function omit(obj, ...props) {
 
 export default function categoryRepositoryMongoDB() {
   const findByProperty = (params) => CategoryModel.find(omit(params, "page", "pageSize"))
-    .skip(params.pageSize * (params.page))
+    .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
   const countAll = (params) => CategoryModel.countDocuments(omit(params, "page", "pageSize"));
@@ -26,10 +26,16 @@ export default function categoryRepositoryMongoDB() {
     return newCategory.save();
   };
 
+  const deleteById = (id) => CategoryModel.deleteOne({ _id: id });
+
+  const updateById = (id, updatedCat) => CategoryModel.updateOne({ _id: id }, updatedCat);
+
   return {
     findByProperty,
     countAll,
     findById,
-    add
+    add,
+    deleteById,
+    updateById
   };
 }

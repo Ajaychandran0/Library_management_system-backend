@@ -4,7 +4,8 @@ export default function categoryRepository(repository) {
   const findById = (id) => repository.findById(id);
   const add = (category) => repository.add(category);
   const block = (id) => repository.block(id);
-  const deleteById = (id) => repository.delete(id);
+  const deleteById = (id) => repository.deleteById(id);
+  const updateById = (id, updatedCat) => repository.updateById(id, updatedCat);
 
   return {
     findByProperty,
@@ -12,6 +13,7 @@ export default function categoryRepository(repository) {
     findById,
     add,
     block,
-    deleteById
+    deleteById,
+    updateById
   };
 }

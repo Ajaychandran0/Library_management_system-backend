@@ -6,6 +6,7 @@ export default function memberRepository(repository) {
   const add = (member) => repository.add(member);
   const block = (id) => repository.block(id);
   const deleteById = (id) => repository.deleteById(id);
+  const updateById = (id, updatedMember) => repository.updateById(id, updatedMember);
 
   return {
     findByProperty,
@@ -14,6 +15,7 @@ export default function memberRepository(repository) {
     findById,
     add,
     block,
-    deleteById
+    deleteById,
+    updateById
   };
 }

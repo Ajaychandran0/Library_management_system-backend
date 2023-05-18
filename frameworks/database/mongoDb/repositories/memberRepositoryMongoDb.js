@@ -8,7 +8,7 @@ function omit(obj, ...props) {
 
 export default function memberRepositoryMongoDB() {
   const findByProperty = (params) => MemberModel.find(omit(params, "page", "pageSize"))
-    .skip(params.pageSize * (params.page))
+    .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
   const findByEmail = (email) => MemberModel.findOne({ email }).select("password email");
@@ -34,11 +34,17 @@ export default function memberRepositoryMongoDB() {
     return newMember.save();
   };
 
+  const deleteById = (id) => MemberModel.deleteOne({ _id: id });
+
+  const updateById = (id, updatedMember) => MemberModel.updateOne({ _id: id }, updatedMember);
+
   return {
     findByProperty,
     findByEmail,
     countAll,
     findById,
-    add
+    add,
+    deleteById,
+    updateById
   };
 }

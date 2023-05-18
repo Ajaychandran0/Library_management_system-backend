@@ -1,7 +1,7 @@
-export default function serverConfig(server, config) {
+export default function serverConfig(server) {
   function startServer() {
-    server.listen(config.port, () => {
-      console.log(`Server connected on port: ${config.port}`);
+    server.listen(process.env.SERVER_PORT, () => {
+      console.log(`Server connected on port: ${process.env.SERVER_PORT}`);
     });
   }
 

@@ -11,8 +11,6 @@ export default function bookRepositoryMongoDB() {
     .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
-  const findByEmail = (email) => BookModel.findOne({ email }).select("password email");
-
   const countAll = (params) => BookModel.countDocuments(omit(params, "page", "pageSize"));
 
   const findById = (id) => BookModel.findById(id);
@@ -37,11 +35,16 @@ export default function bookRepositoryMongoDB() {
     return newBook.save();
   };
 
+  const deleteById = (id) => BookModel.deleteOne({ _id: id });
+
+  const updateById = (id, updatedBook) => BookModel.updateOne({ _id: id }, updatedBook);
+
   return {
     findByProperty,
-    findByEmail,
     countAll,
     findById,
-    add
+    add,
+    deleteById,
+    updateById
   };
 }

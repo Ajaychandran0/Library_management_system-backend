@@ -1,7 +1,7 @@
-export default function connection(mongoose, config) {
+export default function connection(mongoose) {
   function connectToMongo() {
     mongoose
-      .connect(config.mongo.uri)
+      .connect(process.env.MONGO_URL)
       .then(
         () => {},
         (err) => {

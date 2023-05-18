@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import config from "../../config/config.js";
 
 export default function authService() {
   const encryptPassword = (password) => {
@@ -11,12 +10,14 @@ export default function authService() {
   const compare = (password, hashedPassword) => bcrypt.compareSync(password, hashedPassword);
 
   const verify = (token, role) => {
-    const jwtSecret = role === "admin" ? config.jwtAdminSecret : config.jwtUserSecret;
+    const jwtSecret = role === "admin" ? process.env.JWT_ADMIN_SECRET : process.env.JWT_USER_SECRET;
     return jwt.verify(token, jwtSecret);
   };
 
   const generateToken = (payload) => {
-    const jwtSecret = payload.role === "admin" ? config.jwtAdminSecret : config.jwtUserSecret;
+    const jwtSecret = payload.user.role === "admin"
+      ? process.env.JWT_ADMIN_SECRET
+      : process.env.JWT_USER_SECRET;
     return jwt.sign(payload, jwtSecret, { expiresIn: 360000 });
   };
 
