@@ -6,8 +6,8 @@ export default function authController(dbRepository, authService) {
     const role = req?.role;
 
     login(email, password, dbRepository, authService, role)
-      .then((token) => {
-        res.status(200).json({ token });
+      .then(({ token, user }) => {
+        res.status(200).json({ token, user });
       })
       .catch((err) => {
         res.status(401).json({ message: err });

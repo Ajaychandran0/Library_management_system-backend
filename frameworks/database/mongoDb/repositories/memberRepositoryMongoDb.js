@@ -11,7 +11,7 @@ export default function memberRepositoryMongoDB() {
     .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
-  const findByEmail = (email) => MemberModel.findOne({ email }).select("password email");
+  const findByEmail = (email) => MemberModel.findOne({ email }).select("password email name");
 
   const countAll = (params) => MemberModel.countDocuments(omit(params, "page", "pageSize"));
 
