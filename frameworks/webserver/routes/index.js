@@ -6,6 +6,7 @@ import adminBookRouter from "./admin/books.js";
 import bookRouter from "./member/books.js";
 import categoryRouter from "./member/categories.js";
 import bookRequestRouter from "./member/requestedBook.js";
+import wishlistRouter from "./member/wishlist.js";
 
 export default function routes(app, express) {
   // admin routes
@@ -19,4 +20,5 @@ export default function routes(app, express) {
   app.use("/books", bookRouter(express));
   app.use("/categories", categoryRouter(express));
   app.use("/requested_books", bookRequestRouter(express));
+  app.use("/wishlist", wishlistRouter(express));
 }
