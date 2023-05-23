@@ -1,6 +1,6 @@
 import ReqBookModel from "../models/requestedBook.js";
 
-export default function bookRepositoryMongoDB() {
+export default function reqBookRepositoryMongoDB() {
   const getAllReqBooks = (memberId) => ReqBookModel.find({ member: memberId })
     .select("book -_id")
     .populate({
@@ -8,7 +8,8 @@ export default function bookRepositoryMongoDB() {
       select: "author bookTitle availableQty imageUrl"
     })
     .sort({ requestDate: -1 })
-    .exec();
+    .exec()
+    .then((book) => book.map((item) => item.book));
 
   const findByProperty = (params) => ReqBookModel.find(params);
 
