@@ -2,6 +2,7 @@ import requestBook from "../../application/use_cases/requestedBook/requestBook.j
 import getAllReqBooks from "../../application/use_cases/requestedBook/getAllReqBooks.js";
 import countAll from "../../application/use_cases/requestedBook/countAll.js";
 import deleteReqBook from "../../application/use_cases/requestedBook/delete.js";
+import getAllBookRequests from "../../application/use_cases/requestedBook/getAllBookRequests.js";
 
 export default function reqBookController(dbRepository) {
   // request book
@@ -20,7 +21,7 @@ export default function reqBookController(dbRepository) {
   };
 
   //   fetch requested Books
-  const fetchAllReqBooks = (req, res) => {
+  const fetchAllReqByMember = (req, res) => {
     const memberId = req.user.id;
     const response = {};
 
@@ -47,9 +48,27 @@ export default function reqBookController(dbRepository) {
       });
   };
 
+  const fetchAllBookRequests = (req, res) => {
+    const response = {};
+
+    getAllBookRequests(dbRepository)
+      .then((bookRequests) => {
+        response.requests = bookRequests;
+        return countAll(dbRepository);
+      })
+      .then((totalItems) => {
+        response.totalItems = totalItems;
+        return res.json(response);
+      })
+      .catch((error) => {
+        res.status(500).json({ message: error });
+      });
+  };
+
   return {
     requestBookById,
-    fetchAllReqBooks,
-    deleteReqBookById
+    fetchAllReqByMember,
+    deleteReqBookById,
+    fetchAllBookRequests
   };
 }
