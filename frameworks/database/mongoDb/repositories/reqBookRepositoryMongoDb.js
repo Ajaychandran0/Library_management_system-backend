@@ -29,12 +29,25 @@ export default function reqBookRepositoryMongoDB() {
 
   const deleteById = (id) => ReqBookModel.deleteOne({ book: id });
 
+  const getAllBookRequests = () => ReqBookModel.find()
+    .populate({
+      path: "book",
+      select: "ISBN bookTitle availableQty -_id"
+    })
+    .populate({
+      path: "member",
+      select: "name email collegeId -_id"
+    })
+    .sort({ requestDate: -1 })
+    .exec();
+
   return {
     getAllReqBooks,
     findByProperty,
     countAll,
     findById,
     add,
-    deleteById
+    deleteById,
+    getAllBookRequests
   };
 }

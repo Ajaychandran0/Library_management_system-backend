@@ -10,12 +10,7 @@ export default function reqBookRouter(express) {
   const dbRepository = reqBookDbRepository(reqBookDbRepositoryMongoDB());
   const controller = reqBookController(dbRepository);
 
-  router.route("/").get(authMiddleware, controller.fetchAllReqByMember);
-
-  router
-    .route("/:id")
-    .post(authMiddleware, controller.requestBookById)
-    .delete(authMiddleware, controller.deleteReqBookById);
+  router.route("/").get(authMiddleware, controller.fetchAllBookRequests);
 
   return router;
 }
