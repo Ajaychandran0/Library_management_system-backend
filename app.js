@@ -6,7 +6,8 @@ import expressConfig from "./frameworks/webserver/express.js";
 import mongoDbConnection from "./frameworks/database/mongoDb/connection.js";
 import serverConfig from "./frameworks/webserver/server.js";
 import routes from "./frameworks/webserver/routes/index.js";
-// import errorHandler from "./frameworks/webserver/middlewares/errorMiddleware.js";
+// eslint-disable-next-line max-len
+// import errorHandlingMiddleware from "./frameworks/webserver/middlewares/errorHandlingMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,6 @@ mongoDbConnection(mongoose).connectToMongo();
 // routes for each endpoint
 routes(app, express);
 
-// app.use(errorHandler);
+// app.use(errorHandlingMiddleware);
 
 export default app;

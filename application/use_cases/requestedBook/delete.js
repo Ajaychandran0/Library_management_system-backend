@@ -1,2 +1,2 @@
-const deleteReqBook = (id, reqBookRepository) => reqBookRepository.deleteById(id);
+const deleteReqBook = (id, reqBookRepository) => reqBookRepository.deleteByBookId(id);
 export default deleteReqBook;

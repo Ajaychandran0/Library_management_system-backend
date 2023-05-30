@@ -1,3 +1,3 @@
-export default function countAll(reqBookRepository) {
-  return reqBookRepository.countAll();
+export default function countAll(params, reqBookRepository) {
+  return reqBookRepository.countAll(params);
 }

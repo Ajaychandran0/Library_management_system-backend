@@ -1,7 +1,5 @@
 import addToWishlist from "../../application/use_cases/wishlist/addToWishlist.js";
-import getWishlist, {
-  getWishlistIds
-} from "../../application/use_cases/wishlist/getWishlist.js";
+import getWishlist, { getWishlistIds } from "../../application/use_cases/wishlist/getWishlist.js";
 import countAll from "../../application/use_cases/wishlist/countAll.js";
 import removeFromWishlist from "../../application/use_cases/wishlist/delete.js";
 

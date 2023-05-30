@@ -7,7 +7,7 @@ export default function wishlistRepositoryMongoDB() {
       path: "book",
       select: "author bookTitle availableQty imageUrl"
     })
-    .sort({ requestDate: -1 })
+    .sort({ _id: -1 })
     .exec()
     .then((book) => book.map((item) => item.book));
 

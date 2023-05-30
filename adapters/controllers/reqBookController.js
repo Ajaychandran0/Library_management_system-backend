@@ -24,11 +24,12 @@ export default function reqBookController(dbRepository) {
   const fetchAllReqByMember = (req, res) => {
     const memberId = req.user.id;
     const response = {};
+    const params = {};
 
     getAllReqBooks(memberId, dbRepository)
       .then((books) => {
         response.books = books;
-        return countAll(dbRepository);
+        return countAll(params, dbRepository);
       })
       .then((totalItems) => {
         response.totalItems = totalItems;
@@ -49,12 +50,22 @@ export default function reqBookController(dbRepository) {
   };
 
   const fetchAllBookRequests = (req, res) => {
+    const params = {};
     const response = {};
 
-    getAllBookRequests(dbRepository)
+    // Dynamically created query params based on endpoint params
+    Object.keys(req.query).forEach((key) => {
+      params[key] = req.query[key];
+    });
+
+    // predefined query params (apart from dynamically) for pagination
+    params.page = params.page ? parseInt(params.page, 10) : 0;
+    params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
+
+    getAllBookRequests(params, dbRepository)
       .then((bookRequests) => {
         response.requests = bookRequests;
-        return countAll(dbRepository);
+        return countAll(params, dbRepository);
       })
       .then((totalItems) => {
         response.totalItems = totalItems;

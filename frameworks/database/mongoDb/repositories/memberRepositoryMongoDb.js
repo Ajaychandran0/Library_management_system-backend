@@ -8,6 +8,7 @@ function omit(obj, ...props) {
 
 export default function memberRepositoryMongoDB() {
   const findByProperty = (params) => MemberModel.find(omit(params, "page", "pageSize"))
+    .sort({ _id: -1 })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
