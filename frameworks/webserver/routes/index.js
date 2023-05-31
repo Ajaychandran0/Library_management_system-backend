@@ -3,11 +3,15 @@ import adminMemberRouter from "./admin/members.js";
 import adminCategoryRouter from "./admin/categories.js";
 import adminBookRouter from "./admin/books.js";
 import adminReqBookRouter from "./admin/requestedBook.js";
+import adminIssuedBookRouter from "./admin/issuedBooks.js";
+import adminReturnedBookRouter from "./admin/returnedBooks.js";
+
 import memberAuthRouter from "./member/auth.js";
 import bookRouter from "./member/books.js";
 import categoryRouter from "./member/categories.js";
 import bookRequestRouter from "./member/requestedBook.js";
 import wishlistRouter from "./member/wishlist.js";
+import issuedBookRouter from "./member/issuedBooks.js";
 
 export default function routes(app, express) {
   // admin routes
@@ -16,6 +20,8 @@ export default function routes(app, express) {
   app.use("/admin/categories", adminCategoryRouter(express));
   app.use("/admin/books", adminBookRouter(express));
   app.use("/admin/requested_books", adminReqBookRouter(express));
+  app.use("/admin/issued_books", adminIssuedBookRouter(express));
+  app.use("/admin/returned_books", adminReturnedBookRouter(express));
 
   // user routes
   app.use("/login", memberAuthRouter(express));
@@ -23,4 +29,5 @@ export default function routes(app, express) {
   app.use("/categories", categoryRouter(express));
   app.use("/requested_books", bookRequestRouter(express));
   app.use("/wishlist", wishlistRouter(express));
+  app.use("/issued_books", issuedBookRouter(express));
 }

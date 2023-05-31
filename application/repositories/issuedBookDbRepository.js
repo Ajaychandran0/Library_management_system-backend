@@ -1,18 +1,19 @@
-export default function reqBookRepository(repository) {
-  const getAllReqBooks = (memberId) => repository.getAllReqBooks(memberId);
+export default function issuedBookRepository(repository) {
+  const find = (params) => repository.find(params);
   const findByProperty = (params) => repository.findByProperty(params);
   const countAll = (params) => repository.countAll(params);
   const findById = (id) => repository.findById(id);
-  const add = (requestedBook) => repository.add(requestedBook);
+  const add = (book) => repository.add(book);
   const deleteByBookId = (id) => repository.deleteByBookId(id);
-  const getAllBookRequests = (params) => repository.getAllBookRequests(params);
+  const findByMember = (params) => repository.findByMember(params);
+
   return {
-    getAllReqBooks,
+    find,
     findByProperty,
     countAll,
     findById,
     add,
     deleteByBookId,
-    getAllBookRequests
+    findByMember
   };
 }

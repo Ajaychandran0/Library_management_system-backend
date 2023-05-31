@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import BookModel from "../models/book.js";
 
 function omit(obj, ...props) {
@@ -8,6 +9,7 @@ function omit(obj, ...props) {
 
 export default function bookRepositoryMongoDB() {
   const findByProperty = (params) => BookModel.find(omit(params, "page", "pageSize"))
+    .sort({ _id: -1 })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
@@ -39,12 +41,15 @@ export default function bookRepositoryMongoDB() {
 
   const updateById = (id, updatedBook) => BookModel.updateOne({ _id: id }, updatedBook);
 
+  const updateNetQty = (id, qty) => BookModel.updateOne({ _id: id }, { $inc: { availableQty: qty } });
+
   return {
     findByProperty,
     countAll,
     findById,
     add,
     deleteById,
-    updateById
+    updateById,
+    updateNetQty
   };
 }

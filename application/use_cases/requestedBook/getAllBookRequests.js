@@ -1,3 +1,3 @@
-export default function getAllBookRequests(reqBookRepository) {
-  return reqBookRepository.getAllBookRequests();
+export default function getAllBookRequests(params, reqBookRepository) {
+  return reqBookRepository.getAllBookRequests(params);
 }

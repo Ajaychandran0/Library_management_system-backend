@@ -18,7 +18,8 @@ const BookSchema = new Schema({
   },
   category: {
     type: String,
-    required: true
+    required: true,
+    uppercase: true
   },
   quantity: {
     type: Number,

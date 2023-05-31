@@ -1,21 +1,27 @@
 import ReqBookModel from "../models/requestedBook.js";
 
+function omit(obj, ...props) {
+  const result = { ...obj };
+  props.forEach((prop) => delete result[prop]);
+  return result;
+}
+
 export default function reqBookRepositoryMongoDB() {
   const getAllReqBooks = (memberId) => ReqBookModel.find({ member: memberId })
-    .select("book -_id")
+    .select("book requestDate -_id")
     .populate({
       path: "book",
-      select: "author bookTitle availableQty imageUrl"
+      select: "author bookTitle availableQty imageUrl language"
     })
     .sort({ requestDate: -1 })
     .exec()
     .then((book) => book.map((item) => item.book));
 
-  const findByProperty = (params) => ReqBookModel.find(params);
-
-  const countAll = (params) => ReqBookModel.countDocuments(params);
+  const countAll = (params) => ReqBookModel.countDocuments(omit(params, "page", "pageSize"));
 
   const findById = (id) => ReqBookModel.findById(id);
+
+  const findByProperty = (params) => ReqBookModel.find(params);
 
   const add = (book) => {
     const newReqBook = new ReqBookModel({
@@ -27,19 +33,45 @@ export default function reqBookRepositoryMongoDB() {
     return newReqBook.save();
   };
 
-  const deleteById = (id) => ReqBookModel.deleteOne({ book: id });
+  const deleteByBookId = (id) => ReqBookModel.deleteOne({ book: id });
 
-  const getAllBookRequests = () => ReqBookModel.find()
-    .populate({
-      path: "book",
-      select: "ISBN bookTitle availableQty -_id"
-    })
-    .populate({
-      path: "member",
-      select: "name email collegeId -_id"
-    })
-    .sort({ requestDate: -1 })
-    .exec();
+  const getAllBookRequests = (params) => ReqBookModel.aggregate([
+    { $match: omit(params, "page", "pageSize") },
+    {
+      $lookup: {
+        from: "books",
+        localField: "book",
+        foreignField: "_id",
+        as: "bookData"
+      }
+    },
+    { $unwind: "$bookData" },
+    {
+      $lookup: {
+        from: "members",
+        localField: "member",
+        foreignField: "_id",
+        as: "memberData"
+      }
+    },
+    { $unwind: "$memberData" },
+    {
+      $project: {
+        ISBN: "$bookData.ISBN",
+        bookTitle: "$bookData.bookTitle",
+        availableQty: "$bookData.availableQty",
+        bookId: "$bookData._id",
+        memberId: "$memberData._id",
+        name: "$memberData.name",
+        email: "$memberData.email",
+        collegeId: "$memberData.collegeId",
+        requestDate: 1
+      }
+    },
+    { $sort: { requestDate: -1 } },
+    { $skip: params.pageSize * params.page },
+    { $limit: params.pageSize }
+  ]);
 
   return {
     getAllReqBooks,
@@ -47,7 +79,7 @@ export default function reqBookRepositoryMongoDB() {
     countAll,
     findById,
     add,
-    deleteById,
+    deleteByBookId,
     getAllBookRequests
   };
 }

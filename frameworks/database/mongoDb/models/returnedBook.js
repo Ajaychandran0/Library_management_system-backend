@@ -16,7 +16,7 @@ const ReturnedBookSchema = new Schema({
     type: Date,
     required: true
   },
-  retunDate: {
+  returnDate: {
     type: Date,
     required: true
   },
@@ -27,7 +27,7 @@ const ReturnedBookSchema = new Schema({
   fine: {
     type: Number
   },
-  fineStatus: {
+  isFinePaid: {
     type: Boolean
   }
 });
