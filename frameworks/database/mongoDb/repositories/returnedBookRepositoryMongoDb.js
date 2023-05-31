@@ -1,4 +1,4 @@
-import IssuedBookModel from "../models/issuedBook.js";
+import ReturnedBookModel from "../models/returnedBook.js";
 
 function omit(obj, ...props) {
   const result = { ...obj };
@@ -6,26 +6,26 @@ function omit(obj, ...props) {
   return result;
 }
 
-export default function issuedBookRepositoryMongoDB() {
-  const find = (params) => IssuedBookModel.find(params);
-  const countAll = (params) => IssuedBookModel.countDocuments(omit(params, "page", "pageSize"));
+export default function returnedBookRepositoryMongoDB() {
+  const countAll = (params) => ReturnedBookModel.countDocuments(omit(params, "page", "pageSize"));
 
-  const findById = (id) => IssuedBookModel.findById(id);
+  const findById = (id) => ReturnedBookModel.findById(id);
 
   const add = (book) => {
-    const newReqBook = new IssuedBookModel({
+    const newReturnedBook = new ReturnedBookModel({
       book: book.getBook(),
       member: book.getMember(),
       issueDate: book.getIssuedDate(),
-      returnDate: book.getReturnDate()
+      returnDate: book.getReturnDate(),
+      returnedOn: book.getReturnedOn(),
+      fine: book.getFine(),
+      isFinePaid: book.getIsFinePaid()
     });
 
-    return newReqBook.save();
+    return newReturnedBook.save();
   };
 
-  const deleteByBookId = (id) => IssuedBookModel.deleteOne({ book: id });
-
-  const findByProperty = (params) => IssuedBookModel.find(omit(params, "page", "pageSize"))
+  const findByProperty = (params) => ReturnedBookModel.find(omit(params, "page", "pageSize"))
     .populate({
       path: "book",
       select: "ISBN bookTitle availableQty"
@@ -40,7 +40,7 @@ export default function issuedBookRepositoryMongoDB() {
 
     .exec();
 
-  const findByMember = (params) => IssuedBookModel.find(omit(params, "page", "pageSize"))
+  const findByMember = (params) => ReturnedBookModel.find(omit(params, "page", "pageSize"))
     .populate({
       path: "book",
       select: "ISBN bookTitle imageUrl language author -_id"
@@ -51,12 +51,10 @@ export default function issuedBookRepositoryMongoDB() {
     .exec();
 
   return {
-    find,
     findByMember,
     findByProperty,
     countAll,
     findById,
-    add,
-    deleteByBookId
+    add
   };
 }
