@@ -2,7 +2,7 @@ import returnBook from "../../application/use_cases/returnedBook/returnBook.js";
 import countAll from "../../application/use_cases/returnedBook/countAll.js";
 import findByMember from "../../application/use_cases/returnedBook/findByMember.js";
 
-export default function issuedBookController({
+export default function returnedBookController({
   returnedBookRepository,
   issuedBookRepository,
   bookRepository
@@ -21,7 +21,6 @@ export default function issuedBookController({
         res.status(200).json({ book });
       })
       .catch((err) => {
-        console.log(err);
         res
           .status(err.statusCode || 500)
           .json({ message: err.message ? err.message : err });
