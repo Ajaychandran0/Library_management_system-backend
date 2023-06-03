@@ -12,11 +12,9 @@ export default function addbook(bookDetails, bookRepository) {
     lostPrice,
     section,
     shelfNo,
-    image
+    image,
+    aboutBook
   } = bookDetails;
-
-  const createdAt = new Date();
-  const availableQty = quantity;
 
   if (!bookTitle || !ISBN || !language || !quantity || !image) {
     const error = { message: "Input fields cannot be empty", statusCode: 400 };
@@ -30,13 +28,15 @@ export default function addbook(bookDetails, bookRepository) {
     author,
     language,
     quantity: Number(quantity),
-    availableQty: Number(availableQty),
+    availableQty: Number(quantity),
     price: Number(price),
     lostPrice: Number(lostPrice),
     section,
     shelfNo: Number(shelfNo),
     imageUrl: image,
-    createdAt
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    aboutBook
   });
 
   return bookRepository.findByProperty({ ISBN }).then((bookExist) => {

@@ -53,6 +53,12 @@ const BookSchema = new Schema({
   createdAt: {
     type: Date,
     required: true
+  },
+  updatedAt: {
+    type: Date
+  },
+  aboutBook: {
+    type: String
   }
 });
 

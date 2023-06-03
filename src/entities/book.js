@@ -12,6 +12,7 @@ export default function Book(book) {
     getSection: () => book.section,
     getShelfNo: () => book.shelfNo,
     getImageUrl: () => book.imageUrl,
-    getCreatedAt: () => book.createdAt
+    getCreatedAt: () => book.createdAt,
+    getAboutBook: () => book.aboutBook
   };
 }

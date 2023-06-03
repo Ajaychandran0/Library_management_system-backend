@@ -9,7 +9,7 @@ function omit(obj, ...props) {
 
 export default function bookRepositoryMongoDB() {
   const findByProperty = (params) => BookModel.find(omit(params, "page", "pageSize"))
-    .sort({ _id: -1 })
+    .sort({ updatedAt: -1 })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize);
 
@@ -31,7 +31,8 @@ export default function bookRepositoryMongoDB() {
       section: book.getSection(),
       shelfNo: book.getShelfNo(),
       imageUrl: book.getImageUrl(),
-      createdAt: book.getCreatedAt()
+      createdAt: book.getCreatedAt(),
+      aboutBook: book.getAboutBook()
     });
 
     return newBook.save();
