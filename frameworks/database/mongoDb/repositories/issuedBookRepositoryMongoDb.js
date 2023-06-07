@@ -23,7 +23,7 @@ export default function issuedBookRepositoryMongoDB() {
     return newReqBook.save();
   };
 
-  const deleteByBookId = (id) => IssuedBookModel.deleteOne({ book: id });
+  const deleteByProperty = (params) => IssuedBookModel.deleteOne(params);
 
   const findByProperty = (params) => IssuedBookModel.find(omit(params, "page", "pageSize"))
     .populate({
@@ -57,6 +57,6 @@ export default function issuedBookRepositoryMongoDB() {
     countAll,
     findById,
     add,
-    deleteByBookId
+    deleteByProperty
   };
 }

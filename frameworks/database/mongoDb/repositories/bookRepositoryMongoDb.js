@@ -43,6 +43,22 @@ export default function bookRepositoryMongoDB() {
 
   const updateNetQty = (id, qty) => BookModel.updateOne({ _id: id }, { $inc: { availableQty: qty } });
 
+  const findByFilter = (params) => {
+    const { filter } = omit(params, "page", "pageSize");
+    const searchQuery = {
+      $or: [
+        { bookTitle: { $regex: filter, $options: "i" } },
+        { ISBN: { $regex: filter, $options: "i" } },
+        { author: { $regex: filter, $options: "i" } },
+        { category: { $regex: filter, $options: "i" } }
+      ]
+    };
+    return BookModel.find(searchQuery)
+      .sort({ _id: -1 })
+      .skip(params.pageSize * params.page)
+      .limit(params.pageSize);
+  };
+
   return {
     findByProperty,
     countAll,
@@ -50,6 +66,7 @@ export default function bookRepositoryMongoDB() {
     add,
     deleteById,
     updateById,
-    updateNetQty
+    updateNetQty,
+    findByFilter
   };
 }
