@@ -34,10 +34,9 @@ export default function returnedBookRepositoryMongoDB() {
       path: "member",
       select: "name email collegeId"
     })
+    .sort({ issueDate: -1 })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize)
-    .sort({ issueDate: -1 })
-
     .exec();
 
   const findByMember = (params) => ReturnedBookModel.find(omit(params, "page", "pageSize"))
@@ -45,9 +44,9 @@ export default function returnedBookRepositoryMongoDB() {
       path: "book",
       select: "ISBN bookTitle imageUrl language author -_id"
     })
+    .sort({ returnedOn: -1 })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize)
-    .sort({ issueDate: -1 })
     .exec();
 
   return {

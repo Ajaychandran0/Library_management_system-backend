@@ -9,9 +9,9 @@ export default function bookRouter(express) {
   const dbRepository = bookDbRepository(bookDbRepositoryMongoDB());
   const controller = bookController(dbRepository);
 
-  router
-    .route("/")
-    .get(controller.fetchBooksByProperty);
+  router.route("/").get(controller.fetchBooksByProperty);
+
+  router.route("/filter").get(controller.fetchBooksByFilter);
 
   return router;
 }

@@ -33,7 +33,7 @@ export default function reqBookRepositoryMongoDB() {
     return newReqBook.save();
   };
 
-  const deleteByBookId = (id) => ReqBookModel.deleteOne({ book: id });
+  const deleteByProperty = (params) => ReqBookModel.deleteOne(params);
 
   const getAllBookRequests = (params) => ReqBookModel.aggregate([
     { $match: omit(params, "page", "pageSize") },
@@ -79,7 +79,7 @@ export default function reqBookRepositoryMongoDB() {
     countAll,
     findById,
     add,
-    deleteByBookId,
+    deleteByProperty,
     getAllBookRequests
   };
 }

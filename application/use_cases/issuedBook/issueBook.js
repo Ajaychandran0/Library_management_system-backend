@@ -48,6 +48,9 @@ export default function issuebook({
       book.availableQty -= 1;
       return book.save();
     })
-    .then(() => requestedBookRepository.deleteByBookId(bookId))
+    .then(() => requestedBookRepository.deleteByProperty({
+      book: bookId,
+      member: memberId
+    }))
     .then(() => issuedBookRepository.add(newIssuedBook));
 }

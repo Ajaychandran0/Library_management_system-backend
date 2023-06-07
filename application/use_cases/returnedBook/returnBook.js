@@ -42,5 +42,5 @@ export default function issuebook({
       return returnedBookRepository.add(newReturnedBook);
     })
     .then(() => bookRepository.updateNetQty(bookId, 1))
-    .then(() => issuedBookRepository.deleteByBookId(bookId));
+    .then(() => issuedBookRepository.deleteByProperty({ book: bookId, member: memberId }));
 }

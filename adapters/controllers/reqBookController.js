@@ -41,9 +41,11 @@ export default function reqBookController(dbRepository) {
   };
 
   const deleteReqBookById = (req, res) => {
-    const { id } = req.params;
-    deleteReqBook(id, dbRepository)
-      .then(() => res.status(200).json({ id }))
+    const book = req.params.id;
+    const member = req.user.id;
+
+    deleteReqBook({ book, member }, dbRepository)
+      .then(() => res.status(200).json({ id: book }))
       .catch((err) => {
         res.status(err.statusCode || 500).json({ message: err.message || err });
       });

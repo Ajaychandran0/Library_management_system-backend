@@ -3,6 +3,7 @@ import findByProperty from "../../application/use_cases/book/findByProperty.js";
 import countAll from "../../application/use_cases/book/countAll.js";
 import deleteBook from "../../application/use_cases/book/delete.js";
 import updateBook from "../../application/use_cases/book/update.js";
+import findByFilter from "../../application/use_cases/book/findByFilter.js";
 
 export default function bookController(dbRepository) {
   const addNewbook = (req, res) => {
@@ -66,10 +67,34 @@ export default function bookController(dbRepository) {
       });
   };
 
+  const fetchBooksByFilter = (req, res) => {
+    const params = {};
+    const response = {};
+
+    // Dynamically created query params based on endpoint params
+    Object.keys(req.query).forEach((key) => {
+      params[key] = req.query[key];
+    });
+
+    // predefined query params (apart from dynamically) for pagination
+    params.page = params.page ? parseInt(params.page, 10) : 0;
+    params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
+    findByFilter(params, dbRepository)
+      .then((books) => {
+        response.books = books;
+        response.totalItems = books.length;
+        response.totalPages = Math.ceil(books.length / params.pageSize);
+        response.itemsPerPage = params.pageSize;
+        return res.json(response);
+      })
+      .catch((error) => res.status(500).json({ message: error }));
+  };
+
   return {
     addNewbook,
     fetchBooksByProperty,
     deleteBookById,
-    updateBookById
+    updateBookById,
+    fetchBooksByFilter
   };
 }
