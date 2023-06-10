@@ -7,6 +7,7 @@ export default function bookRepository(repository) {
   const updateById = (id, updatedBook) => repository.updateById(id, updatedBook);
   const updateNetQty = (id, qty) => repository.updateNetQty(id, qty);
   const findByFilter = (params) => repository.findByFilter(params);
+  const countAllByFilter = (params) => repository.countAllByFilter(params);
 
   return {
     findByProperty,
@@ -16,6 +17,7 @@ export default function bookRepository(repository) {
     deleteById,
     updateById,
     updateNetQty,
-    findByFilter
+    findByFilter,
+    countAllByFilter
   };
 }

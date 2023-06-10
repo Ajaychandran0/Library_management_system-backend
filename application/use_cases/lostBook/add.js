@@ -11,7 +11,7 @@ export default function addLostBook({
   const lostBookDetails = {
     lostDate: new Date(),
     lostQty: 1,
-    isfinePaid: false
+    isFinePaid: false
   };
   return issuedBookRepository
     .find({ book: bookId, member: memberId })

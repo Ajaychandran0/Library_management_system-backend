@@ -60,6 +60,19 @@ export default function bookRepositoryMongoDB() {
       .limit(params.pageSize);
   };
 
+  const countAllByFilter = (params) => {
+    const { filter } = omit(params, "page", "pageSize");
+    const searchQuery = {
+      $or: [
+        { bookTitle: { $regex: filter, $options: "i" } },
+        { ISBN: { $regex: filter, $options: "i" } },
+        { author: { $regex: filter, $options: "i" } },
+        { category: { $regex: filter, $options: "i" } }
+      ]
+    };
+    return BookModel.countDocuments(searchQuery);
+  };
+
   return {
     findByProperty,
     countAll,
@@ -68,6 +81,7 @@ export default function bookRepositoryMongoDB() {
     deleteById,
     updateById,
     updateNetQty,
-    findByFilter
+    findByFilter,
+    countAllByFilter
   };
 }

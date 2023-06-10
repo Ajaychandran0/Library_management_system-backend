@@ -4,6 +4,7 @@ import countAll from "../../application/use_cases/book/countAll.js";
 import deleteBook from "../../application/use_cases/book/delete.js";
 import updateBook from "../../application/use_cases/book/update.js";
 import findByFilter from "../../application/use_cases/book/findByFilter.js";
+import countAllByFilter from "../../application/use_cases/book/countAllByFilter.js";
 
 export default function bookController(dbRepository) {
   const addNewbook = (req, res) => {
@@ -82,12 +83,18 @@ export default function bookController(dbRepository) {
     findByFilter(params, dbRepository)
       .then((books) => {
         response.books = books;
-        response.totalItems = books.length;
-        response.totalPages = Math.ceil(books.length / params.pageSize);
+        return countAllByFilter(params, dbRepository);
+      })
+      .then((totalItems) => {
+        response.totalItems = totalItems;
+        response.totalPages = Math.ceil(totalItems / params.pageSize);
         response.itemsPerPage = params.pageSize;
         return res.json(response);
       })
-      .catch((error) => res.status(500).json({ message: error }));
+
+      .catch((error) => {
+        res.status(500).json({ message: error });
+      });
   };
 
   return {

@@ -68,7 +68,7 @@ export default function lostBookController({
     // predefined query params (apart from dynamically) for pagination
     params.page = params.page ? parseInt(params.page, 10) : 0;
     params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
-    params.member = req.user.id;
+    params["member._id"] = req.user.id;
 
     findByProperty(params, lostBookRepository)
       .then((lostBooks) => {
