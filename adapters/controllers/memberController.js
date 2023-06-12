@@ -4,11 +4,11 @@ import countAll from "../../application/use_cases/member/countAll.js";
 import deleteMember from "../../application/use_cases/member/delete.js";
 import updateMember from "../../application/use_cases/member/update.js";
 
-export default function memberController(dbRepository, authService) {
+export default function memberController(memberRepository, authService) {
   const addNewMember = (req, res) => {
     const memberDetails = req.body;
 
-    addMember(memberDetails, dbRepository, authService)
+    addMember(memberDetails, memberRepository, authService)
       .then((member) => res.status(200).json({ member }))
       .catch((err) => {
         res.status(err.statusCode || 500).json({ message: err.message || err });
@@ -28,10 +28,10 @@ export default function memberController(dbRepository, authService) {
     params.page = params.page ? parseInt(params.page, 10) : 0;
     params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
 
-    findByProperty(params, dbRepository)
+    findByProperty(params, memberRepository)
       .then((members) => {
         response.members = members;
-        return countAll(params, dbRepository);
+        return countAll(params, memberRepository);
       })
       .then((totalItems) => {
         response.totalItems = totalItems;
@@ -44,7 +44,7 @@ export default function memberController(dbRepository, authService) {
 
   const deleteMemberById = (req, res) => {
     const { id } = req.params;
-    deleteMember(id, dbRepository)
+    deleteMember(id, memberRepository)
       .then(() => res.status(200).json({ id }))
       .catch((err) => {
         res.status(err.statusCode || 500).json({ message: err.message || err });
@@ -54,8 +54,17 @@ export default function memberController(dbRepository, authService) {
   const updateMemberById = (req, res) => {
     const { id } = req.params;
     const updatedMember = req.body;
-    updateMember(id, updatedMember, dbRepository)
+    updateMember(id, updatedMember, memberRepository)
       .then(() => res.status(200).json({ success: true }))
+      .catch((err) => {
+        res.status(err.statusCode || 500).json({ message: err.message || err });
+      });
+  };
+
+  const fetchMemberById = (req, res) => {
+    const memberId = req.user.id;
+    findByProperty({ _id: memberId }, memberRepository)
+      .then((memberDetails) => res.json({ memberDetails: memberDetails[0] }))
       .catch((err) => {
         res.status(err.statusCode || 500).json({ message: err.message || err });
       });
@@ -65,6 +74,7 @@ export default function memberController(dbRepository, authService) {
     addNewMember,
     fetchMembersByProperty,
     deleteMemberById,
-    updateMemberById
+    updateMemberById,
+    fetchMemberById
   };
 }

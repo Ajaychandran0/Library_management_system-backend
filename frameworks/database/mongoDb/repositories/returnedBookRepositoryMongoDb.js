@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import ReturnedBookModel from "../models/returnedBook.js";
 
 function omit(obj, ...props) {
@@ -42,18 +43,66 @@ export default function returnedBookRepositoryMongoDB() {
   const findByMember = (params) => ReturnedBookModel.find(omit(params, "page", "pageSize"))
     .populate({
       path: "book",
-      select: "ISBN bookTitle imageUrl language author -_id"
+      select: "ISBN bookTitle imageUrl language author"
     })
     .sort({ returnedOn: -1 })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize)
     .exec();
 
+  const findByFilter = (memberId, params) => {
+    const { filter } = omit(params, "page", "pageSize");
+    const searchQuery = {
+      $or: [
+        { "book.bookTitle": { $regex: filter, $options: "i" } },
+        { "book.ISBN": { $regex: filter, $options: "i" } },
+        { "book.author": { $regex: filter, $options: "i" } },
+        { "book.category": { $regex: filter, $options: "i" } }
+      ]
+    };
+    return ReturnedBookModel.aggregate([
+      { $match: { member: new mongoose.Types.ObjectId(memberId) } },
+      {
+        $lookup: {
+          from: "books",
+          localField: "book",
+          foreignField: "_id",
+          as: "book"
+        }
+      },
+      { $unwind: "$book" },
+      { $match: searchQuery },
+      {
+        $facet: {
+          totalCount: [{ $count: "total" }],
+          results: [
+            { $sort: { returnedOn: -1 } },
+            { $skip: params.pageSize * params.page },
+            { $limit: params.pageSize }
+          ]
+        }
+      }
+    ]).exec();
+  };
+
+  const findByOverdueItems = (memberId) => ReturnedBookModel.find({
+    member: memberId,
+    fine: { $gt: 0 },
+    isFinePaid: false
+  })
+    .populate({
+      path: "book",
+      select: "ISBN bookTitle imageUrl language author"
+    })
+    .sort({ returnedOn: -1 });
+
   return {
     findByMember,
     findByProperty,
     countAll,
     findById,
-    add
+    add,
+    findByFilter,
+    findByOverdueItems
   };
 }

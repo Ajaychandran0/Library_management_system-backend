@@ -43,7 +43,7 @@ export default function issuedBookRepositoryMongoDB() {
   const findByMember = (params) => IssuedBookModel.find(omit(params, "page", "pageSize"))
     .populate({
       path: "book",
-      select: "ISBN bookTitle imageUrl language author -_id"
+      select: "ISBN bookTitle imageUrl language author"
     })
     .skip(params.pageSize * params.page)
     .limit(params.pageSize)

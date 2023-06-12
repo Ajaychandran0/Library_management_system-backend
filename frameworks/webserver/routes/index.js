@@ -15,6 +15,7 @@ import wishlistRouter from "./member/wishlist.js";
 import issuedBookRouter from "./member/issuedBooks.js";
 import returnedBookRouter from "./member/returnedBooks.js";
 import lostBookRouter from "./member/lostBooks.js";
+import memberAccountRouter from "./member/memberAccount.js";
 
 export default function routes(app, express) {
   // admin routes
@@ -29,6 +30,7 @@ export default function routes(app, express) {
 
   // user routes
   app.use("/login", memberAuthRouter(express));
+  app.use("/account", memberAccountRouter(express));
   app.use("/books", bookRouter(express));
   app.use("/categories", categoryRouter(express));
   app.use("/requested_books", bookRequestRouter(express));

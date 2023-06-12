@@ -4,12 +4,16 @@ export default function returnedBookRepository(repository) {
   const findById = (id) => repository.findById(id);
   const add = (book) => repository.add(book);
   const findByMember = (params) => repository.findByMember(params);
+  const findByFilter = (memberId, params) => repository.findByFilter(memberId, params);
+  const findByOverdueItems = (memberId) => repository.findByOverdueItems(memberId);
 
   return {
     findByProperty,
     countAll,
     findById,
     add,
-    findByMember
+    findByMember,
+    findByFilter,
+    findByOverdueItems
   };
 }

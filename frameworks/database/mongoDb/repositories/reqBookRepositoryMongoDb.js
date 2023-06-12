@@ -8,7 +8,7 @@ function omit(obj, ...props) {
 
 export default function reqBookRepositoryMongoDB() {
   const getAllReqBooks = (memberId) => ReqBookModel.find({ member: memberId })
-    .select("book requestDate -_id")
+    .select("book requestDate")
     .populate({
       path: "book",
       select: "author bookTitle availableQty imageUrl language"
