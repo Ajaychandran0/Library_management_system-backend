@@ -6,10 +6,10 @@ import updateBook from "../../application/use_cases/book/update.js";
 import findByFilter from "../../application/use_cases/book/findByFilter.js";
 import countAllByFilter from "../../application/use_cases/book/countAllByFilter.js";
 
-export default function bookController(dbRepository) {
+export default function bookController({ bookRepository, cachingRepository }) {
   const addNewbook = (req, res) => {
     const bookDetails = req.body;
-    addBook(bookDetails, dbRepository)
+    addBook(bookDetails, bookRepository)
       .then((book) => {
         res.status(200).json({ book });
       })
@@ -33,24 +33,42 @@ export default function bookController(dbRepository) {
     // predefined query params (apart from dynamically) for pagination
     params.page = params.page ? parseInt(params.page, 10) : 0;
     params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
-    findByProperty(params, dbRepository)
+    findByProperty(params, bookRepository)
       .then((books) => {
         response.books = books;
-        return countAll(params, dbRepository);
+        return countAll(params, bookRepository);
       })
       .then((totalItems) => {
         response.totalItems = totalItems;
         response.totalPages = Math.ceil(totalItems / params.pageSize);
         response.itemsPerPage = params.pageSize;
+        const cachingOptions = {
+          key: `books?page=${params.page}&pageSize=${params.pageSize}&category=${params.category}`,
+          expireTimeSec: 360,
+          data: JSON.stringify(response)
+        };
+        // cache the result to redis
+        cachingRepository.setCache(cachingOptions);
         return res.json(response);
       })
-      .catch((error) => res.status(500).json({ message: error }));
+      .catch((error) => {
+        res.status(500).json({ message: error });
+      });
   };
 
   const deleteBookById = (req, res) => {
     const { id } = req.params;
-    deleteBook(id, dbRepository)
-      .then(() => res.status(200).json({ id }))
+    deleteBook(id, bookRepository)
+      .then(() => {
+        const cachingOptions = {
+          key: "books?page=*&pageSize=$*&category=*",
+          expireTimeSec: 1,
+          data: ""
+        };
+        // cache the result to redis
+        cachingRepository.setCache(cachingOptions);
+        res.status(200).json({ id });
+      })
       .catch((err) => {
         res.status(err.statusCode || 500).json({ message: err.message || err });
       });
@@ -59,8 +77,9 @@ export default function bookController(dbRepository) {
   const updateBookById = (req, res) => {
     const { id } = req.params;
     const updatedBook = req.body;
-    updateBook(id, updatedBook, dbRepository)
+    updateBook(id, updatedBook, bookRepository)
       .then(() => {
+        cachingRepository.clearCache();
         res.status(200).json({ success: true });
       })
       .catch((err) => {
@@ -80,10 +99,10 @@ export default function bookController(dbRepository) {
     // predefined query params (apart from dynamically) for pagination
     params.page = params.page ? parseInt(params.page, 10) : 0;
     params.pageSize = params.pageSize ? parseInt(params.pageSize, 10) : 100;
-    findByFilter(params, dbRepository)
+    findByFilter(params, bookRepository)
       .then((books) => {
         response.books = books;
-        return countAllByFilter(params, dbRepository);
+        return countAllByFilter(params, bookRepository);
       })
       .then((totalItems) => {
         response.totalItems = totalItems;

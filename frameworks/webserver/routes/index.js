@@ -18,26 +18,26 @@ import lostBookRouter from "./member/lostBooks.js";
 import memberAccountRouter from "./member/memberAccount.js";
 import paymentRouter from "./member/payment.js";
 
-export default function routes(app, express) {
+export default function routes(app, express, redisClient) {
   // admin routes
   app.use("/admin/login", adminAuthRouter(express));
-  app.use("/admin/members", adminMemberRouter(express));
-  app.use("/admin/categories", adminCategoryRouter(express));
-  app.use("/admin/books", adminBookRouter(express));
-  app.use("/admin/requested_books", adminReqBookRouter(express));
-  app.use("/admin/issued_books", adminIssuedBookRouter(express));
-  app.use("/admin/returned_books", adminReturnedBookRouter(express));
-  app.use("/admin/lost_books", adminLostBookRouter(express));
+  app.use("/admin/members", adminMemberRouter(express, redisClient));
+  app.use("/admin/categories", adminCategoryRouter(express, redisClient));
+  app.use("/admin/books", adminBookRouter(express, redisClient));
+  app.use("/admin/requested_books", adminReqBookRouter(express, redisClient));
+  app.use("/admin/issued_books", adminIssuedBookRouter(express, redisClient));
+  app.use("/admin/returned_books", adminReturnedBookRouter(express, redisClient));
+  app.use("/admin/lost_books", adminLostBookRouter(express, redisClient));
 
   // user routes
   app.use("/login", memberAuthRouter(express));
   app.use("/account", memberAccountRouter(express));
-  app.use("/books", bookRouter(express));
-  app.use("/categories", categoryRouter(express));
-  app.use("/requested_books", bookRequestRouter(express));
-  app.use("/wishlist", wishlistRouter(express));
-  app.use("/issued_books", issuedBookRouter(express));
-  app.use("/returned_books", returnedBookRouter(express));
-  app.use("/lost_books", lostBookRouter(express));
+  app.use("/books", bookRouter(express, redisClient));
+  app.use("/categories", categoryRouter(express, redisClient));
+  app.use("/requested_books", bookRequestRouter(express, redisClient));
+  app.use("/wishlist", wishlistRouter(express, redisClient));
+  app.use("/issued_books", issuedBookRouter(express, redisClient));
+  app.use("/returned_books", returnedBookRouter(express, redisClient));
+  app.use("/lost_books", lostBookRouter(express, redisClient));
   app.use("/payment", paymentRouter(express));
 }
