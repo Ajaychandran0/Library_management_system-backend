@@ -3,6 +3,7 @@ import countAll from "../../application/use_cases/returnedBook/countAll.js";
 import findByMember from "../../application/use_cases/returnedBook/findByMember.js";
 import findByFilter from "../../application/use_cases/returnedBook/findByFilter.js";
 import findbyOverdueItems from "../../application/use_cases/returnedBook/findByOverdueItems.js";
+import findAllOverdueItems from "../../application/use_cases/returnedBook/findAllOverdueItems.js";
 
 export default function returnedBookController({
   returnedBookRepository,
@@ -95,10 +96,19 @@ export default function returnedBookController({
       });
   };
 
+  const fetchAllOverdueItems = (req, res) => {
+    findAllOverdueItems(returnedBookRepository)
+      .then((overdueItems) => res.json({ overdueItems }))
+      .catch((error) => {
+        res.status(500).json({ message: error });
+      });
+  };
+
   return {
     returnNewBook,
     fetchReturnedBooksByMember,
     fetchReturnedBooksByFilter,
-    fetchMemberOverdueItems
+    fetchMemberOverdueItems,
+    fetchAllOverdueItems
   };
 }

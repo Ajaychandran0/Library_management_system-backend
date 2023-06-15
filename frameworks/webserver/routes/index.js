@@ -16,6 +16,7 @@ import issuedBookRouter from "./member/issuedBooks.js";
 import returnedBookRouter from "./member/returnedBooks.js";
 import lostBookRouter from "./member/lostBooks.js";
 import memberAccountRouter from "./member/memberAccount.js";
+import paymentRouter from "./member/payment.js";
 
 export default function routes(app, express) {
   // admin routes
@@ -38,4 +39,5 @@ export default function routes(app, express) {
   app.use("/issued_books", issuedBookRouter(express));
   app.use("/returned_books", returnedBookRouter(express));
   app.use("/lost_books", lostBookRouter(express));
+  app.use("/payment", paymentRouter(express));
 }

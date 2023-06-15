@@ -96,6 +96,22 @@ export default function returnedBookRepositoryMongoDB() {
     })
     .sort({ returnedOn: -1 });
 
+  const findAllOverdueItems = () => ReturnedBookModel.find({
+    fine: { $gt: 0 },
+    isFinePaid: false
+  })
+    .populate({
+      path: "book",
+      select: "ISBN bookTitle imageUrl language author"
+    })
+    .populate({
+      path: "member",
+      select: "name email collegeId"
+    })
+    .sort({ returnedOn: -1 });
+
+  const updateById = (id, updatedItem) => ReturnedBookModel.updateOne({ _id: id }, updatedItem);
+
   return {
     findByMember,
     findByProperty,
@@ -103,6 +119,8 @@ export default function returnedBookRepositoryMongoDB() {
     findById,
     add,
     findByFilter,
-    findByOverdueItems
+    findByOverdueItems,
+    findAllOverdueItems,
+    updateById
   };
 }

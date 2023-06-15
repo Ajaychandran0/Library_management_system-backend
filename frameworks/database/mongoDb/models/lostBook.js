@@ -68,7 +68,7 @@ const BookSchema = new Schema({
     type: Number
   },
   lostPrice: {
-    type: String
+    type: Number
   },
   bookCoverUrl: {
     type: String

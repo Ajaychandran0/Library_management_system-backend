@@ -11,8 +11,12 @@ export default function issuedBookRouter(express) {
   const router = express.Router();
 
   // load controller with dependencies
-  const returnedBookRepository = returnedBookDbRepository(returnedBookDbRepositoryMongoDB());
-  const issuedBookRepository = issuedBookDbRepository(issuedBookDbRepositoryMongoDB());
+  const returnedBookRepository = returnedBookDbRepository(
+    returnedBookDbRepositoryMongoDB()
+  );
+  const issuedBookRepository = issuedBookDbRepository(
+    issuedBookDbRepositoryMongoDB()
+  );
   const bookRepository = bookDbRepository(bookDbRepositoryMongoDB());
 
   const controller = returnedBookController({
@@ -25,6 +29,10 @@ export default function issuedBookRouter(express) {
     .route("/")
     .get(authMiddleware, controller.fetchReturnedBooksByMember)
     .post(authMiddleware, controller.returnNewBook);
+
+  router
+    .route("/overdueItems")
+    .get(authMiddleware, controller.fetchAllOverdueItems);
 
   return router;
 }

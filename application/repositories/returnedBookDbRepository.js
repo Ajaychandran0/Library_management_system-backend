@@ -6,6 +6,8 @@ export default function returnedBookRepository(repository) {
   const findByMember = (params) => repository.findByMember(params);
   const findByFilter = (memberId, params) => repository.findByFilter(memberId, params);
   const findByOverdueItems = (memberId) => repository.findByOverdueItems(memberId);
+  const findAllOverdueItems = () => repository.findAllOverdueItems();
+  const updateById = (id, updatedItem) => repository.updateById(id, updatedItem);
 
   return {
     findByProperty,
@@ -14,6 +16,8 @@ export default function returnedBookRepository(repository) {
     add,
     findByMember,
     findByFilter,
-    findByOverdueItems
+    findByOverdueItems,
+    findAllOverdueItems,
+    updateById
   };
 }
