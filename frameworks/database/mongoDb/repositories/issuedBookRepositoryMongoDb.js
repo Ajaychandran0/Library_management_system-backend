@@ -13,6 +13,7 @@ export default function issuedBookRepositoryMongoDB() {
   const findById = (id) => IssuedBookModel.findById(id);
 
   const add = (book) => {
+	  console.log(book," in issued book add");
     const newReqBook = new IssuedBookModel({
       book: book.getBook(),
       member: book.getMember(),

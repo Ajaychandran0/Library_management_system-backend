@@ -44,9 +44,8 @@ export default function issuebook({
           statusCode: 400
         };
         throw error;
-      }
-      book.availableQty -= 1;
-      return book.save();
+      }  
+      return bookRepository.updateNetQty(book._id, -1);
     })
     .then(() => requestedBookRepository.deleteByProperty({
       book: bookId,
